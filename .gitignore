@@ -7,3 +7,7 @@ venv/
 .idea/
 # ignore the .env file
 .env
+# ignore Python bytecode caches
+__pycache__/
+# ignore macOS Finder files
+.DS_Store

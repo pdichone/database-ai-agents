@@ -10,8 +10,8 @@ load_dotenv()
 
 openai_key = os.getenv("OPENAI_API_KEY")
 
-llm_name = "gpt-3.5-turbo"
-model = ChatOpenAI(api_key=openai_key, model=llm_name)
+llm_name = "gpt-6-luna"  # gpt-3.5-turbo was shut down; see HOTFIX-NOTES.md
+model = ChatOpenAI(api_key=openai_key, model=llm_name, reasoning_effort="none")
 
 
 from langchain.agents import create_sql_agent
@@ -127,6 +127,9 @@ sql_agent = create_sql_agent(
     toolkit=toolkit,
     top_k=30,
     verbose=True,
+    # gpt-6-luna rejects the "stop" parameter the old text (ReAct) agent needs,
+    # so we use native tool calling. FORMAT_INSTRUCTIONS is ignored in this mode.
+    agent_type="tool-calling",
 )
 
 # res = sql_agent.invoke(QUESTION)

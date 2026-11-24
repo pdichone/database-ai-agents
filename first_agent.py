@@ -8,8 +8,8 @@ load_dotenv()
 
 openai_key = os.getenv("OPENAI_API_KEY")
 
-llm_name = "gpt-3.5-turbo"
-model = ChatOpenAI(api_key=openai_key, model=llm_name)
+llm_name = "gpt-6-luna"  # gpt-3.5-turbo was shut down; see HOTFIX-NOTES.md
+model = ChatOpenAI(api_key=openai_key, model=llm_name, reasoning_effort="none")
 
 messages = [
     SystemMessage(

@@ -9,8 +9,8 @@ load_dotenv()
 
 openai_key = os.getenv("OPENAI_API_KEY")
 
-llm_name = "gpt-3.5-turbo"  # use this cause is cheaper!
-model = ChatOpenAI(api_key=openai_key, model=llm_name)
+llm_name = "gpt-6-luna"  # gpt-3.5-turbo was shut down; see HOTFIX-NOTES.md
+model = ChatOpenAI(api_key=openai_key, model=llm_name, reasoning_effort="none")
 
 # for the weather function calling
 client = OpenAI(api_key=openai_key)
@@ -64,9 +64,10 @@ def run_conversation():
     ]
     # Call the model with the conversation and available functions
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model=llm_name,  # was "gpt-4o" (shuts down Jan 14 2027)
         messages=messages,
         tools=tools,
+        reasoning_effort="none",  # gpt-6-luna needs this for function tools
         tool_choice="auto",  # auto is default, but we'll be explicit
     )
     response_message = response.choices[0].message
@@ -100,8 +101,9 @@ def run_conversation():
                 }
             )  # extend conversation with function response
         second_response = client.chat.completions.create(
-            model="gpt-4o",
+            model=llm_name,
             messages=messages,
+            reasoning_effort="none",
         )  # get a new response from the model where it can see the function response
         return second_response
 
